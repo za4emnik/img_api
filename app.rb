@@ -20,6 +20,7 @@ class App < Sinatra::Application
   configure do
     set :raise_sinatra_param_exceptions, true
     set show_exceptions: false
+    set :public_folder, 'uploads'
   end
 
 get '/' do
@@ -32,10 +33,19 @@ post '/load' do
     param :task,     String, required: true
     param :action,   String, in: ['save'],  required: true
     param :params,   String, required: true
-    param :link,     String, required: true
+    param :image,     String, required: true
 
-    task = Task.create! params
-    task.id.to_s
+    #task = Task.create! params
+    task = Task.new params
+    task.remote_image_url = params['image']
+
+    task.save!
+
+    json({
+              id: task.id.to_s,
+              params: task.params.to_s,
+              link: task.image.url
+          })
 end
 
 get '/get_task/:id' do
@@ -44,7 +54,7 @@ get '/get_task/:id' do
    json({
              id: task.id.to_s,
              params: task.params.to_s,
-             link: task.link.to_s,
+             link: task.link.to_s
          })
 end
 
