@@ -25,15 +25,9 @@ class App < Sinatra::Application
     set :public_folder, 'uploads'
   end
 
-get '/' do
-  task = Task.all.pluck(:id)
-
-  task.to_s
-end
-
 post '/load' do
-    param :task,   String, in: ['save', 'resize', 'rotate'],  required: true
-    param :params,   String, required: true
+    param :task,      String, in: ['save', 'resize', 'rotate'],  required: true
+    param :params,    String, required: true
     param :image,     String, required: true
 
     task = TaskFactory.getInstance.getObj(params)
