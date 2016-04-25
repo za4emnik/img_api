@@ -6,6 +6,8 @@ require 'sinatra-initializers'
 require 'shotgun'
 require 'mongoid'
 require 'dotenv'
+require 'mini_magick'
+require 'carrierwave'
 require 'carrierwave/mongoid'
 
 require 'require_all'
@@ -30,31 +32,29 @@ get '/' do
 end
 
 post '/load' do
-    param :task,     String, required: true
-    param :action,   String, in: ['save'],  required: true
+    param :task,   String, in: ['save', 'resize', 'rotate'],  required: true
     param :params,   String, required: true
     param :image,     String, required: true
 
-    #task = Task.create! params
-    task = Task.new params
-    task.remote_image_url = params['image']
+    task = TaskFactory.getInstance.getObj(params)
+    task = task.processed(params)
 
-    task.save! 
 
     json({
               id: task.id.to_s,
               params: task.params.to_s,
-              link: task.image.url
+              image: task.image.file.file,
           })
 end
 
 get '/get_task/:id' do
    param :id, String, required: true
    task = Task.find params['id']
+
    json({
              id: task.id.to_s,
              params: task.params.to_s,
-             link: task.link.to_s
+             link: task.image.url
          })
 end
 

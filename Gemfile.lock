@@ -27,6 +27,7 @@ GEM
     i18n (0.7.0)
     json (1.8.3)
     mime-types (2.99.1)
+    mini_magick (4.5.1)
     minitest (5.8.4)
     mongo (2.2.4)
       bson (~> 4.0)
@@ -74,8 +75,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  carrierwave
   carrierwave-mongoid
   dotenv
+  mini_magick
   mongoid
   rack-contrib
   require_all
