@@ -2,18 +2,18 @@ class ImageUploader < CarrierWave::Uploader::Base
   storage :file
 
   def move_to_cache
-    true
+   true
   end
 
   def move_to_store
-    true
+   true
   end
 
   def store_dir
-    "#{model.class.to_s.underscore}/#{model.id}/#{mounted_as}"
+   "#{model.class.to_s.underscore}/#{model.id}/#{mounted_as}"
   end
 
   def cache_dir
-    "tmp/#{model.class.to_s.underscore}/#{model.id}/#{mounted_as}"
+   "tmp/#{model.class.to_s.underscore}/#{model.id}/#{mounted_as}"
   end
 end

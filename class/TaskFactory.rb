@@ -3,21 +3,20 @@ class TaskFactory #factory class
   #singleton
   @@instance = TaskFactory.new()
   def self.getInstance
-    return @@instance
+   return @@instance
   end
   private_class_method :new
 
   def getObj (params)
-    case params['task']
-  	when 'save'
-  	  Save.new
+   case params['task']
+    when 'save'
+     Save.new
     when 'resize'
-      Resize.new
+     Resize.new
     when 'rotate'
-      Rotate.new
-  	else
-  	  puts "unknow task"
-  	end
+     Rotate.new
+    else
+     puts "unknow task"
+    end
   end
-
 end

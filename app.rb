@@ -9,11 +9,12 @@ require 'dotenv'
 require 'mini_magick'
 require 'carrierwave'
 require 'carrierwave/mongoid'
-
 require 'require_all'
+require 'active_model_serializers'
 require_all 'class'
 require_all 'model'
-
+require_all 'serializers'
+require_all 'inc'
 
 Dotenv.load
 
@@ -26,45 +27,28 @@ class App < Sinatra::Application
   end
 
 post '/load' do
-    param :task,      String, in: ['save', 'resize', 'rotate'],  required: true
-    param :params,    String, required: true
-    param :image,     String, required: true
+  #params
+  param :task,      String, in: ['save', 'resize', 'rotate'],  required: true
+  param :params,    String, required: true
+  param :image,     String, required: true
 
-    task = TaskFactory.getInstance.getObj(params)
-    task = task.processed(params)
+  #processed task
+  task = TaskFactory.getInstance.getObj(params)
+  task = task.processed(params)
 
-
-    json({
-              id: task.id.to_s,
-              params: task.params.to_s,
-              image: task.image.file.file,
-          })
+  #output
+  json task
 end
 
 get '/get_task/:id' do
-   param :id, String, required: true
-   task = Task.find params['id']
+  #params
+  param :id, String, required: true
 
-   json({
-             id: task.id.to_s,
-             params: task.params.to_s,
-             link: task.image.url
-         })
+  #find task
+  task = Task.find params['id']
+
+  #output
+  json task
 end
-
-
-error Sinatra::Param::InvalidParameterError do
-    status 422
-    json({
-             error: "#{env['sinatra.error'].param} is invalid"
-         })
-  end
-
-  error Mongoid::Errors::DocumentNotFound do
-    status 404
-    json({
-             error: "Task Not Found"
-         })
-  end
 
 end
