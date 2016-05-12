@@ -1,0 +1,10 @@
+/home/maxim/.rvm/rubies/ruby-2.0.0-p648/bin/ruby -r ./siteconf20160512-5080-16hgf0c.rb extconf.rb
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+make: Цель «all» не требует выполнения команд.
+
+make "DESTDIR=" install
+installing default libraries
